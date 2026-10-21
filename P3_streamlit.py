@@ -5,13 +5,11 @@ import joblib
 
 st.title("Job Placement Prediction")
 
-# Load saved files
 model = joblib.load("log_model.pkl")
 scaler = joblib.load("scaler.pkl")
 ohe = joblib.load("ohe.pkl")
 feature_columns = joblib.load("feature_columns.pkl")
 
-# Candidate details
 with st.form("placement_form"):
 
     c1, c2, c3 = st.columns(3)
@@ -180,13 +178,12 @@ if submit:
         [data.drop(columns=onehot_columns), encoded_df], axis=1
     )
 
-    # Match the exact training columns and order
     data = data.reindex(columns=feature_columns, fill_value=0)
 
-    # Apply the fitted scaler
+
     data_scaled = scaler.transform(data)
 
-    # Predict placement
+
     prediction = model.predict(data_scaled)[0]
 
     if prediction == 1:
